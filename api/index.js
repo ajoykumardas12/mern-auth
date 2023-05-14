@@ -14,6 +14,25 @@ mongoose.connect(process.env.MONGODB_URI)
 .then(() => console.log("Database connected"))
 .catch((err) => console.log("Database not connected", err))
 
+const handleErrors = (err) => {
+  console.log(err.message, err.code);
+
+  let errors = {name: "", email: "", password: ""};
+
+  if(err.code === 11000){
+    errors.email = "Email is already registered";
+    return errors;
+  }
+
+  if(err.message.includes("users validation failed")){
+    Object.values(err.errors).forEach(({properties}) => {
+      errors[properties.path] = properties.message;
+    });
+  }
+
+  return errors;
+}
+
 
 app.get("/users", (req, res) => {
   UserModel.find({})
@@ -27,12 +46,25 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/signup", async(req,res) => {
-  const user = req.body
-  const newUser = new UserModel(user)
+  const user = req.body;
+  console.log(user);
 
-  await newUser.save()
+  try{
+    const newUser = new UserModel(user);
+    await newUser.save();
+  
+    res.status(200).json(user);
+  }
+  catch(err){
+    const error = handleErrors(err);
+    res.status(400).json(error)
+  }
 
-  res.json(user)
+})
+
+app.post("/login", async(req,res) => {
+  const { email, password } = req.body;
+  console.log(email, password);
 })
 
 app.listen(3125, () => {
