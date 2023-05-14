@@ -1,4 +1,7 @@
 const express = require("express")
+const app = express()
+
+app.use(express.json())
 
 require("dotenv").config()
 
@@ -10,19 +13,25 @@ mongoose.connect(process.env.MONGODB_URI)
 .catch((err) => console.log("Database not connected", err))
 
 
-const app = express()
-
 app.get("/users", (req, res) => {
-    UserModel.find({})
-      .then((users) => {
-        res.json(users);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).send("Error retrieving users");
-      });
-  });
-  
+  UserModel.find({})
+    .then((users) => {
+      res.json(users);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving users");
+    });
+});
+
+app.post("/signup", async(req,res) => {
+  const user = req.body
+  const newUser = new UserModel(user)
+
+  await newUser.save()
+
+  res.json(user)
+})
 
 app.listen(3125, () => {
     console.log("Up and running on port 3125")
