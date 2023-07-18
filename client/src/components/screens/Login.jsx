@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import GoogleIcon from "../icons/GoogleIcon";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
+import GoogleIcon from "../icons/GoogleIcon";
 
-const SignUp = () => {
+const LogIn = ({ setLoggedIn }) => {
   return (
     <div className="flex min-h-screen">
       <div className="w-6/12 p-6 flex flex-col">
@@ -17,16 +17,16 @@ const SignUp = () => {
         </div>
         <div className="flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
           <h2 className="self-start text-3xl font-semibold mb-3">
-            Create your account
+            Welcome back
           </h2>
-          <p className="self-start mb-5">We're excited to have you join us!</p>
+          <p className="self-start mb-5">Please enter your details.</p>
           <div className="w-full mb-5">
-            <SignupForm />
+            <LoginForm />
           </div>
           <div className="text-sm text-center">
-            Already have an account?{" "}
-            <Link to={"/signin"} className="text-blue-800">
-              Sign In
+            Don't have an account yet?{" "}
+            <Link to="/" className="text-blue-800">
+              Sign Up
             </Link>
           </div>
         </div>
@@ -36,52 +36,41 @@ const SignUp = () => {
   );
 };
 
-function SignupForm() {
-  const [name, setName] = useState("");
+function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
 
-  const signUp = () => {
+  const signIn = () => {
     axios
-      .post(import.meta.env.VITE_BACKEND_ENDPOINT + "/signup", {
-        name: name,
+      .post(import.meta.env.VITE_BACKEND_ENDPOINT + "/login", {
         email: email,
         password: password,
       })
       .then((response) => {
         console.log(response);
-        navigate("/login");
+
+        if (response.data.user) {
+          setLoggedIn();
+          localStorage.setItem("jwtoken", response.data.user);
+          navigate("/dashboard");
+        }
       })
       .catch((error) => {
-        console.log(error.response);
-        setErrorMessage(error.response.data);
+        console.log("error", error.response);
+        setErrorMessage(error.response.data.msg);
       });
   };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        //   signUp();
+        // signIn();
       }}
       className="w-full flex flex-col gap-4"
     >
-      <label>
-        <div className="text-sm mb-1">Name</div>
-        <input
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
-        />
-      </label>
       <label>
         <div className="text-sm mb-1">Email</div>
         <input
@@ -102,12 +91,11 @@ function SignupForm() {
           className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
         />
       </label>
-
       <button
         type="submit"
         className="text-sm p-2 bg-brand text-white rounded-md mt-2"
       >
-        Sign Up
+        Sign in
       </button>
       <Link
         to=""
@@ -119,10 +107,6 @@ function SignupForm() {
   );
 }
 
-export default SignUp;
+export default LogIn;
 
-{
-  /* {errorMessage.password && (
-              <p className="error">{errorMessage.password}</p>
-            )} */
-}
+// {errorMessage && <p className="error">{errorMessage}</p>}

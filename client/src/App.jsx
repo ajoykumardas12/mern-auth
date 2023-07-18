@@ -1,5 +1,5 @@
 import SignUp from "./components/screens/SignUp";
-import LogIn from "./components/Login";
+import LogIn from "./components/screens/Login";
 import { Routes, Route } from "react-router-dom";
 import UserDetails from "./components/UserDetails";
 import { useState } from "react";
@@ -16,7 +16,7 @@ function App() {
     <main className="min-h-screen">
       <Routes>
         <Route path="/" element={<SignUp />} />
-        <Route path="/login" element={<LogIn setLoggedIn={setLoggedIn} />} />
+        <Route path="/signin" element={<LogIn setLoggedIn={setLoggedIn} />} />
         <Route
           path="/dashboard"
           element={

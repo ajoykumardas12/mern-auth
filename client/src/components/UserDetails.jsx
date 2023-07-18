@@ -6,17 +6,17 @@ function UserDetails() {
   const [name, setName] = useState("");
 
   const navigate = useNavigate();
-  async function fetchUserDetails(){
-      const res = await axios.get(
-          `${import.meta.env.VITE_BACKEND_ENDPOINT}/user-details`,
-          {
-              headers: {
-                  "x-access-token": localStorage.getItem("jwtoken")
-              }
-          }
-      )
-      console.log(res);
-      setName(res.data);
+  async function fetchUserDetails() {
+    const res = await axios.get(
+      `${import.meta.env.VITE_BACKEND_ENDPOINT}/user-details`,
+      {
+        headers: {
+          "x-access-token": localStorage.getItem("jwtoken"),
+        },
+      }
+    );
+    console.log(res);
+    setName(res.data);
   }
 
   useEffect(() => {
@@ -25,21 +25,15 @@ function UserDetails() {
 
   const logOut = () => {
     localStorage.removeItem("jwtoken");
-    navigate("/login");
-  } 
+    navigate("/signin");
+  };
 
   return (
-      <div className="dashboard">
-        <div>
-          Dashboard
-        </div>
-        { name &&           
-          <div>
-            Hello, {name}
-          </div>
-        }
-        <button onClick={logOut}>Log Out</button>
-      </div>
+    <div className="dashboard">
+      <div>Dashboard</div>
+      {name && <div>Hello, {name}</div>}
+      <button onClick={logOut}>Log Out</button>
+    </div>
   );
 }
 
