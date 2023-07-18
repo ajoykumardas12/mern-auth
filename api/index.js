@@ -1,31 +1,29 @@
 import express from "express";
-const app = express();
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
-
 import userRoutes from "./routes/userRoutes.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
+import connectDB from "./config/db.js";
+
 // import bcrypt from "bcrypt";
 // import jwt from "jsonwebtoken";
-
-// import mongoose from "mongoose";
 
 // import { UserModel } from "./models/users.js";
 // const { default: isEmail } = require("validator/lib/isEmail");
 
+const app = express();
+
+connectDB();
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/api/users", userRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
-
-// mongoose
-//   .connect(process.env.MONGODB_URI)
-//   .then(() => console.log("Database connected"))
-//   .catch((err) => console.log("Database not connected", err));
 
 // const handleErrors = (err) => {
 //   console.log(err.message, err.code);

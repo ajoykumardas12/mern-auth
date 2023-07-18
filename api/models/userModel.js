@@ -1,16 +1,16 @@
-const mongoose = require("mongoose");
-const { isEmail } = require("validator");
-const bcrypt = require("bcrypt");
+import mongoose from "mongoose";
+import isEmail from "validator/lib/isEmail.js";
+import bcrypt from "bcrypt";
 
-const hashPassword = async(password) => {
+const hashPassword = async (password) => {
   const salt = await bcrypt.genSalt(12);
   const hashedPassword = await bcrypt.hash(password, salt);
   return hashedPassword;
-}
-
+};
 
 // Create the UserModel
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     name: {
       type: String,
       required: [true, "Please enter your name"],
@@ -25,19 +25,25 @@ const userSchema = new mongoose.Schema({
     password: {
       type: String,
       required: [true, "Please enter an password"],
-      minlength: [8, "Password must be at least 8 characters long"]
+      minlength: [8, "Password must be at least 8 characters long"],
     },
-});
+  },
+  {
+    timestamps: true,
+  }
+);
 
 userSchema.pre("save", async function (next) {
-  const user = this;
+  if (!this.isModified("password")) {
+    next();
+  }
 
+  const user = this;
   user.password = await hashPassword(user.password);
 
   next();
 });
 
+const User = mongoose.model("users", userSchema);
 
-  
-const UserModel = mongoose.model("users", userSchema)
-module.exports = UserModel
+export default User;
