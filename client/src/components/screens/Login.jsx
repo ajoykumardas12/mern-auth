@@ -99,7 +99,7 @@ function LoginForm() {
       </button>
       <Link
         to=""
-        className="text-center text-xs p-[0.35rem] border border-black/20 rounded-md"
+        className="text-center text-xs p-[0.35rem] bg-light border border-black/20 rounded-md"
       >
         <GoogleIcon iconClass="inline w-4 h-4 mr-1" /> Sign in with Google
       </Link>

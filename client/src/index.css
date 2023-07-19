@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  a:focus {
+    outline-color: #623eba;
+  }
+}

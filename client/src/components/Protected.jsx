@@ -12,7 +12,7 @@ const Protected = ({ isLoggedIn, children }) => {
         const user = jwt_decode(token);
         if (!user) {
           localStorage.removeItem("jwtoken");
-          navigate("/login");
+          navigate("/signin");
           return;
         }
         //  else {
@@ -21,10 +21,10 @@ const Protected = ({ isLoggedIn, children }) => {
       } catch (err) {
         console.error(err);
         localStorage.removeItem("jwtoken");
-        navigate("/login");
+        navigate("/signin");
       }
     } else {
-      navigate("/login");
+      navigate("/signin");
     }
   }, []);
 
