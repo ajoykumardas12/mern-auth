@@ -18,7 +18,7 @@ const LogIn = () => {
           </div>
           <h1 className="">Reveal</h1>
         </div>
-        <div className="my-4 flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
+        <div className="mt-6 flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
           <h2 className="self-start text-3xl font-semibold mb-3">
             Welcome back
           </h2>

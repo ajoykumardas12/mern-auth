@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setCredentials } from "../../slices/authSlice";
+import { useRegisterMutation } from "../../slices/usersApiSlice";
 import GoogleIcon from "../icons/GoogleIcon";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
+import Spinner from "../Spinner";
 
 const SignUp = () => {
   return (
@@ -40,35 +43,36 @@ function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const signUp = () => {
-    axios
-      .post(import.meta.env.VITE_BACKEND_ENDPOINT + "/signup", {
-        name: name,
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log(response);
-        navigate("/login");
-      })
-      .catch((error) => {
-        console.log(error.response);
-        setErrorMessage(error.response.data);
-      });
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const [register, { isLoading }] = useRegisterMutation();
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+  }, [navigate, userInfo]);
+
+  const signupHandler = async () => {
+    setErrorMessage("");
+    try {
+      const res = await register({ name, email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/dashboard");
+    } catch (err) {
+      setErrorMessage(err?.data?.message);
+    }
   };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        //   signUp();
+        signupHandler();
       }}
       className="w-full flex flex-col gap-4"
     >
@@ -103,12 +107,25 @@ function SignupForm() {
         />
       </label>
 
-      <button
-        type="submit"
-        className="text-sm p-2 bg-brand text-white rounded-md mt-2"
-      >
-        Sign Up
-      </button>
+      <div>
+        {errorMessage && (
+          <p className="text-sm text-center text-red-500">{errorMessage}</p>
+        )}
+
+        <button
+          type="submit"
+          className="w-full text-sm p-2 bg-brand text-white rounded-md mt-2"
+        >
+          {isLoading ? (
+            <>
+              <span className="mr-1">Signing up</span> <Spinner />
+            </>
+          ) : (
+            "Sign up"
+          )}
+        </button>
+      </div>
+
       <Link
         to=""
         className="text-center text-xs p-[0.35rem] bg-light border border-black/20 rounded-md"
