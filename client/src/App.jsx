@@ -1,7 +1,7 @@
 import SignUp from "./components/screens/SignUp";
 import LogIn from "./components/screens/Login";
 import { Routes, Route } from "react-router-dom";
-import UserDetails from "./components/UserDetails";
+import Dashboard from "./components/Dashboard";
 import { useState } from "react";
 import Protected from "./components/Protected";
 
@@ -20,9 +20,9 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <Protected isLoggedIn={isLoggedIn}>
-              <UserDetails />
-            </Protected>
+            // <Protected isLoggedIn={isLoggedIn}>
+            <Dashboard />
+            // {/* </Protected> */}
           }
         />
       </Routes>

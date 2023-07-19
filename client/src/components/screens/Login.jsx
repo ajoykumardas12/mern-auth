@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
 import GoogleIcon from "../icons/GoogleIcon";
@@ -42,32 +45,32 @@ function LoginForm() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const signIn = () => {
-    axios
-      .post(import.meta.env.VITE_BACKEND_ENDPOINT + "/login", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log(response);
+  const [login, { isLoading }] = useLoginMutation();
 
-        if (response.data.user) {
-          setLoggedIn();
-          localStorage.setItem("jwtoken", response.data.user);
-          navigate("/dashboard");
-        }
-      })
-      .catch((error) => {
-        console.log("error", error.response);
-        setErrorMessage(error.response.data.msg);
-      });
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/dashboard");
+    }
+  }, [navigate, userInfo]);
+
+  const signIn = async () => {
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/dashboard");
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        // signIn();
+        signIn();
       }}
       className="w-full flex flex-col gap-4"
     >
