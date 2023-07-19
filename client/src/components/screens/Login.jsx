@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
 import GoogleIcon from "../icons/GoogleIcon";
+import Spinner from "../Spinner";
 
 const LogIn = ({ setLoggedIn }) => {
   return (
@@ -58,12 +58,13 @@ function LoginForm() {
   }, [navigate, userInfo]);
 
   const signIn = async () => {
+    setErrorMessage("");
     try {
       const res = await login({ email, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate("/dashboard");
     } catch (err) {
-      console.log(err);
+      setErrorMessage(err?.data?.message);
     }
   };
   return (
@@ -94,12 +95,24 @@ function LoginForm() {
           className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
         />
       </label>
-      <button
-        type="submit"
-        className="text-sm p-2 bg-brand text-white rounded-md mt-2"
-      >
-        Sign in
-      </button>
+      <div>
+        {errorMessage && (
+          <p className="text-sm text-center text-red-500">{errorMessage}</p>
+        )}
+        <button
+          type="submit"
+          className="w-full text-sm p-2 bg-brand text-white rounded-md mt-2"
+        >
+          {isLoading ? (
+            <>
+              <span className="mr-1">Signing in</span> <Spinner />
+            </>
+          ) : (
+            "Sign in"
+          )}
+        </button>
+      </div>
+
       <Link
         to=""
         className="text-center text-xs p-[0.35rem] bg-light border border-black/20 rounded-md"
