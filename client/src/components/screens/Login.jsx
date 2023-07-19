@@ -8,7 +8,7 @@ import BrandLogo from "../BrandLogo";
 import GoogleIcon from "../icons/GoogleIcon";
 import Spinner from "../Spinner";
 
-const LogIn = ({ setLoggedIn }) => {
+const LogIn = () => {
   return (
     <div className="flex min-h-screen">
       <div className="w-6/12 p-6 flex flex-col">
@@ -18,7 +18,7 @@ const LogIn = ({ setLoggedIn }) => {
           </div>
           <h1 className="">Reveal</h1>
         </div>
-        <div className="flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
+        <div className="my-4 flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
           <h2 className="self-start text-3xl font-semibold mb-3">
             Welcome back
           </h2>
@@ -124,5 +124,3 @@ function LoginForm() {
 }
 
 export default LogIn;
-
-// {errorMessage && <p className="error">{errorMessage}</p>}
