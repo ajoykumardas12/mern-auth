@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { clearCredentials } from "../slices/authSlice";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ function Dashboard() {
     <div className="dashboard">
       <div>Dashboard</div>
       {userInfo && <div>Hello, {userInfo.name}</div>}
+      <Link to="/profile">Edit profile</Link>
       <button onClick={logoutHandler}>Log Out</button>
     </div>
   );

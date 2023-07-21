@@ -137,9 +137,3 @@ function SignupForm() {
 }
 
 export default SignUp;
-
-{
-  /* {errorMessage.password && (
-              <p className="error">{errorMessage.password}</p>
-            )} */
-}
