@@ -3,15 +3,22 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 import { setCredentials } from "../slices/authSlice";
+import Sidebar from "./Sidebar";
 import Spinner from "./Spinner";
+import Header from "./Header";
 
 const Profile = () => {
   return (
-    <div>
-      Profile
-      <div className="w-4/12">
-        {" "}
-        <EditProfileForm />
+    <div className="min-h-screen flex p-6">
+      <Sidebar />
+      <div className="w-full">
+        <Header />
+        <div className="w-full flex flex-col font-dmsans ml-4">
+          <div className="mb-3 font-medium">Edit profile</div>
+          <div className="w-6/12">
+            <EditProfileForm />
+          </div>
+        </div>
       </div>
     </div>
   );

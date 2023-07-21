@@ -1,33 +1,21 @@
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../slices/usersApiSlice";
-import { clearCredentials } from "../slices/authSlice";
-import { Link } from "react-router-dom";
+import Header from "./Header";
+import Sidebar from "./Sidebar";
 
 function Dashboard() {
-  const navigate = useNavigate();
-
-  const { userInfo } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  const [logoutApiCall] = useLogoutMutation();
-
-  const logoutHandler = async () => {
-    try {
-      await logoutApiCall().unwrap();
-      dispatch(clearCredentials());
-      navigate("/signin");
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   return (
-    <div className="dashboard">
-      <div>Dashboard</div>
-      {userInfo && <div>Hello, {userInfo.name}</div>}
-      <Link to="/profile">Edit profile</Link>
-      <button onClick={logoutHandler}>Log Out</button>
+    <div className="min-h-screen p-6 flex">
+      <Sidebar />
+      <div className="w-full">
+        <Header />
+        <div className="ml-4">
+          Imagine a beautiful dashboard
+          <img
+            src="https://media.giphy.com/media/QIiqoufLNmWo8/giphy.gif"
+            alt="spongbob imagination GIF"
+            className="mt-4"
+          />
+        </div>
+      </div>
     </div>
   );
 }
