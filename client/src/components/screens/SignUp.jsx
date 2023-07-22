@@ -43,6 +43,7 @@ function SignupForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
@@ -60,12 +61,26 @@ function SignupForm() {
 
   const signupHandler = async () => {
     setErrorMessage("");
-    try {
-      const res = await register({ name, email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate("/dashboard");
-    } catch (err) {
-      setErrorMessage(err?.data?.message);
+    if (!name) {
+      setErrorMessage("Please enter your name");
+    } else if (!email) {
+      setErrorMessage("Please enter your email");
+    } else if (!password) {
+      setErrorMessage("Please enter an atleast 8 characters password");
+    } else if (password.length < 8) {
+      setErrorMessage("Password must me at least 8 characters long");
+    } else if (!confirmPassword) {
+      setErrorMessage("Please confirm your password");
+    } else if (password != confirmPassword) {
+      setErrorMessage("The password confirmation doesn't match");
+    } else {
+      try {
+        const res = await register({ name, email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate("/dashboard");
+      } catch (err) {
+        setErrorMessage(err?.data?.message);
+      }
     }
   };
   return (
@@ -106,6 +121,16 @@ function SignupForm() {
           className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
         />
       </label>
+      <label>
+        <div className="text-sm mb-1">Confirm password</div>
+        <input
+          type="password"
+          placeholder="Confirm your password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
+        />
+      </label>
 
       <div>
         {errorMessage && (
@@ -114,7 +139,7 @@ function SignupForm() {
 
         <button
           type="submit"
-          className="w-full text-sm p-2 bg-brand text-white rounded-md mt-2"
+          className="w-full text-sm p-2 bg-brand hover:bg-dark focus:bg-dark text-white transition-colors rounded-md mt-2"
         >
           {isLoading ? (
             <>
