@@ -12,7 +12,7 @@ function Dashboard() {
           <img
             src="https://media.giphy.com/media/QIiqoufLNmWo8/giphy.gif"
             alt="spongbob imagination GIF"
-            className="mt-4"
+            className="mt-4 rounded"
           />
         </div>
       </div>

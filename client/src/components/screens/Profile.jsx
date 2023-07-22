@@ -28,6 +28,7 @@ function EditProfileForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
@@ -44,7 +45,15 @@ function EditProfileForm() {
 
   const signupHandler = async () => {
     setErrorMessage("");
-    if (password) {
+    if (!password) {
+      setErrorMessage("Please enter new password");
+    } else if (password.length < 8) {
+      setErrorMessage("New password must be at least 8 charachers long");
+    } else if (!confirmPassword) {
+      setErrorMessage("Please confirm your new password");
+    } else if (password != confirmPassword) {
+      setErrorMessage("The password confirmation doesn't match");
+    } else {
       try {
         const res = await updateProfile({
           _id: userInfo._id,
@@ -57,8 +66,6 @@ function EditProfileForm() {
       } catch (err) {
         setErrorMessage(err?.data?.message);
       }
-    } else {
-      setErrorMessage("Please enter new password");
     }
   };
   return (
@@ -91,12 +98,22 @@ function EditProfileForm() {
         />
       </label>
       <label>
-        <div className="text-sm mb-1">Password</div>
+        <div className="text-sm mb-1">New Password</div>
         <input
           type="password"
           placeholder="Enter new password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
+        />
+      </label>
+      <label>
+        <div className="text-sm mb-1">Confirm new password</div>
+        <input
+          type="password"
+          placeholder="Confirm your new password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           className="w-full px-3 py-2 text-sm border border-black/30 rounded-md focus:outline-brand"
         />
       </label>
