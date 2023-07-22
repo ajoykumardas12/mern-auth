@@ -12,6 +12,9 @@ export default {
         leaguespartan: ['"League Spartan"', ...defaultTheme.fontFamily.sans],
         dmsans: ['"DM Sans"', ...defaultTheme.fontFamily.sans],
       },
+      screens: {
+        xs: "460px",
+      },
     },
   },
   plugins: [],

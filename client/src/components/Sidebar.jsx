@@ -29,7 +29,7 @@ const Sidebar = () => {
   return (
     <div className="min-h-full mr-10 flex flex-col font-leaguespartan">
       <div>
-        <div className="flex items-center gap-1 text-2xl font-dmsans">
+        <div className="flex items-center gap-1 text-2xl font-leaguespartan">
           <div className="mb-1">
             <Logo />
           </div>

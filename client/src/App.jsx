@@ -1,9 +1,9 @@
 import SignUp from "./components/screens/SignUp";
 import LogIn from "./components/screens/Login";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/screens/Dashboard";
 import PrivateRoute from "./components/PrivateRoute";
-import Profile from "./components/Profile";
+import Profile from "./components/screens/Profile";
 
 function App() {
   return (

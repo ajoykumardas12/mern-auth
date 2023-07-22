@@ -1,21 +1,21 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateUserMutation } from "../slices/usersApiSlice";
-import { setCredentials } from "../slices/authSlice";
-import Sidebar from "./Sidebar";
-import Spinner from "./Spinner";
-import Header from "./Header";
+import { useUpdateUserMutation } from "../../slices/usersApiSlice";
+import { setCredentials } from "../../slices/authSlice";
+import Sidebar from "../Sidebar";
+import Spinner from "../Spinner";
+import Header from "../Header";
 
 const Profile = () => {
   return (
-    <div className="min-h-screen flex p-6">
+    <div className="min-h-screen p-6 flex flex-col gap-5 xs:flex-row xs:gap-0">
       <Sidebar />
       <div className="w-full">
         <Header />
-        <div className="w-full flex flex-col font-dmsans ml-4">
+        <div className="flex flex-col font-dmsans ml-4">
           <div className="mb-3 font-medium">Edit profile</div>
-          <div className="w-6/12">
+          <div className="w-8/12 min-w-[16rem] max-w-[26rem]">
             <EditProfileForm />
           </div>
         </div>

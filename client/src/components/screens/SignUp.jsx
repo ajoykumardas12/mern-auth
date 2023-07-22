@@ -10,15 +10,15 @@ import Spinner from "../Spinner";
 
 const SignUp = () => {
   return (
-    <div className="flex min-h-screen">
-      <div className="w-6/12 p-6 flex flex-col">
+    <div className="flex min-h-screen flex-col sm:flex-row">
+      <div className="sm:w-6/12 p-6 flex flex-col">
         <div className="flex items-center gap-1 text-2xl font-leaguespartan">
           <div className="mb-1">
             <Logo />
           </div>
           <h1 className="">Reveal</h1>
         </div>
-        <div className="flex-1 self-center w-6/12 flex flex-col items-center justify-center font-dmsans">
+        <div className="mt-12 flex-1 self-center max-w-[80%] lg:w-6/12 flex flex-col items-center justify-center font-dmsans">
           <h2 className="self-start text-3xl font-semibold mb-3">
             Create your account
           </h2>
@@ -125,13 +125,6 @@ function SignupForm() {
           )}
         </button>
       </div>
-
-      <Link
-        to=""
-        className="text-center text-xs p-[0.35rem] bg-light border border-black/20 rounded-md"
-      >
-        <GoogleIcon iconClass="inline w-4 h-4 mr-1" /> Sign in with Google
-      </Link>
     </form>
   );
 }
