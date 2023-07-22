@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setCredentials } from "../../slices/authSlice";
 import { useRegisterMutation } from "../../slices/usersApiSlice";
-import GoogleIcon from "../icons/GoogleIcon";
+import isEmail from "../../utils/isEmail";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
 import Spinner from "../Spinner";
@@ -65,6 +65,8 @@ function SignupForm() {
       setErrorMessage("Please enter your name");
     } else if (!email) {
       setErrorMessage("Please enter your email");
+    } else if (!isEmail(email)) {
+      setErrorMessage("Please enter an valid email address");
     } else if (!password) {
       setErrorMessage("Please enter an atleast 8 characters password");
     } else if (password.length < 8) {

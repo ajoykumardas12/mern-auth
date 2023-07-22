@@ -5,7 +5,6 @@ import { useLoginMutation } from "../../slices/usersApiSlice";
 import { setCredentials } from "../../slices/authSlice";
 import Logo from "../Logo";
 import BrandLogo from "../BrandLogo";
-import GoogleIcon from "../icons/GoogleIcon";
 import Spinner from "../Spinner";
 
 const LogIn = () => {
@@ -59,12 +58,18 @@ function LoginForm() {
 
   const signIn = async () => {
     setErrorMessage("");
-    try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate("/dashboard");
-    } catch (err) {
-      setErrorMessage(err?.data?.message);
+    if (!email) {
+      setErrorMessage("Please enter your email");
+    } else if (!password) {
+      setErrorMessage("Please enter your password");
+    } else {
+      try {
+        const res = await login({ email, password }).unwrap();
+        dispatch(setCredentials({ ...res }));
+        navigate("/dashboard");
+      } catch (err) {
+        setErrorMessage(err?.data?.message);
+      }
     }
   };
   return (
